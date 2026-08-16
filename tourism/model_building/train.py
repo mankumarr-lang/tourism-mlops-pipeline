@@ -20,14 +20,20 @@ Xtest  = pd.read_csv("Xtest.csv")
 ytrain = pd.read_csv("ytrain.csv").squeeze()
 ytest  = pd.read_csv("ytest.csv").squeeze()
 
-# One-hot encode 'Type' and scale numeric features
-numeric_features = ["Air temperature", "Process temperature",
-                     "Rotational speed", "Torque", "Tool wear"]
-categorical_features = ["Type"]
+# Define numeric and categorical features for the tourism dataset
+numeric_features = [
+    "Age", "CityTier", "DurationOfPitch", "NumberOfPersonVisiting",
+    "NumberOfFollowups", "PreferredPropertyStar", "NumberOfTrips",
+    "Passport", "PitchSatisfactionScore", "OwnCar", "NumberOfChildrenVisiting",
+    "MonthlyIncome"
+]
+categorical_features = [
+    'TypeofContact', 'Occupation', 'Gender', 'ProductPitched', 'MaritalStatus', 'Designation'
+]
 
 # Set the class weight to handle class imbalance
 class_weight = ytrain.value_counts()[0] / ytrain.value_counts()[1]
-class_weight
+# class_weight # This line was causing an unnecessary output in the script, commenting it out.
 
 # Define the preprocessing steps
 preprocessor = make_column_transformer(
@@ -101,7 +107,7 @@ with mlflow.start_run():
 
     # Save next to app.py so the Streamlit app can load it directly, and log
     # it as an MLflow artifact for traceability
-    model_path = "week_3_mls/deployment/best_machine_failure_model_v1.joblib"
+    model_path = "tourism/deployment/best_sales_prediction_model_v1.joblib" # Corrected path and filename
     joblib.dump(best_model, model_path)
     mlflow.log_artifact(model_path, artifact_path="model")
     print(f"Model saved to {model_path}")
